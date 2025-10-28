@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await fetch(
-        'https://todo-backend-ckd4.vercel.app/api/v1/login',
+        'https://todo-backend-henna-kappa.vercel.app/api/v1/login',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
