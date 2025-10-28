@@ -6,7 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
+import Profile from './pages/profile';
 import Signup from './pages/Signup';
 
 export default function App() {
