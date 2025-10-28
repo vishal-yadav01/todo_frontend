@@ -14,14 +14,22 @@ const Signup = () => {
         'https://todo-backend-ckd4.vercel.app/api/v1/signup',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ userName, email, password }), // ✅ exact keys
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // this allows cookies (optional but fine)
+          body: JSON.stringify({
+            userName, // ✅ must be same casing as backend
+            email,
+            password,
+          }),
         }
       );
 
       const data = await res.json();
       console.log(data);
+      if (data.success === 1) alert('Signup Success');
+      else alert(data.message);
     } catch (err) {
       console.error(err);
     }
