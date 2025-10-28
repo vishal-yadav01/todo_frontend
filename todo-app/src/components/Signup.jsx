@@ -16,21 +16,14 @@ const Signup = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ userName, email, password }),
+          body: JSON.stringify({ userName, email, password }), // ✅ exact keys
         }
       );
 
       const data = await res.json();
-      if (data.success === 1) {
-        localStorage.setItem('token', data.token);
-        alert('Signup successful!');
-        navigate('/dashboard');
-      } else {
-        alert(data.message);
-      }
+      console.log(data);
     } catch (err) {
       console.error(err);
-      alert('Signup failed!');
     }
   };
 
