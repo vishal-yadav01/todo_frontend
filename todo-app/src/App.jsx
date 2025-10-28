@@ -1,31 +1,33 @@
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from 'react-router-dom';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Profile from './pages/profile';
-
-function App() {
-  const isLoggedIn = !!localStorage.getItem('token');
-
+import Login from './components/login';
+import Signup from './components/Signup';
+import ProtectedRoute from './ProtectedRoute';
+const App = () => {
   return (
     <Router>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/profile"
-            element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
-          />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* Example protected page */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <h1 style={{ textAlign: 'center' }}>Welcome to Dashboard ✅</h1>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;
