@@ -3,7 +3,6 @@ import { apiCall } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-
 export default function Signup() {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,7 +29,7 @@ export default function Signup() {
       }
 
       alert('Signup successful!');
-    
+
       navigate('/profile');
     } else {
       alert(res.message || 'Signup failed');
