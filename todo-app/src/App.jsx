@@ -8,20 +8,37 @@ import {
 import Login from './components/Login';
 import Signup from './components/Signup';
 import ProtectedRoute from './ProtectedRoute';
+import OpenRoute from './OpenRoute';
+import Dashboard from './components/Dashboard';
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/signup"
+          element={
+            <OpenRoute>
+              <Signup />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <OpenRoute>
+              <Login />
+              <Login />
+            </OpenRoute>
+          }
+        />
 
         {/* Example protected page */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <h1 style={{ textAlign: 'center' }}>Welcome to Dashboard ✅</h1>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
