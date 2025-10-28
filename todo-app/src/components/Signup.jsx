@@ -17,19 +17,23 @@ const Signup = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include', // this allows cookies (optional but fine)
-          body: {
-            userName, // ✅ must be same casing as backend
+          credentials: 'include',
+          body: JSON.stringify({
+            userName,
             email,
             password,
-          },
+          }),
         }
       );
 
       const data = await res.json();
       console.log(data);
-      if (data.success === 1) alert('Signup Success');
-      else alert(data.message);
+      if (data.success === 1) {
+        alert('Signup Success');
+        navigate('/login');
+      } else {
+        alert(data.message);
+      }
     } catch (err) {
       console.error(err);
     }
