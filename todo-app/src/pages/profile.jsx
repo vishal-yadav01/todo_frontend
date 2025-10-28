@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { apiCall } from '../api';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { setAccessFlag } from '../slice/authSlice';
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const fetchProfile = async () => {
     try {
       const res = await apiCall('/profile', 'GET');
 
       if (res && res.user) {
+        dispatch(setAccessFlag(true));
         setUser(res.user);
       } else {
+        dispatch(setAccessFlag(false));
         navigate('/login');
       }
     } catch (err) {
       console.error('Profile fetch failed:', err);
+      dispatch(setAccessFlag(false));
       navigate('/login');
     } finally {
       setLoading(false);
@@ -31,6 +35,7 @@ export default function Profile() {
       if (res.success) {
         alert('Logout successful');
         setUser(null);
+        dispatch(setAccessFlag(false));
         navigate('/login');
       } else {
         alert(res.message || 'Logout failed');

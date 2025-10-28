@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { apiCall } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAccessFlag } from '../slice/authSlice';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
-
-
-  
+  const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -21,6 +21,7 @@ export default function Login() {
 
     if (res.success) {
       alert('Login successful!');
+      dispatch(setAccessFlag(true));
       navigate('/profile');
     } else {
       alert(res.message || 'Login failed');
