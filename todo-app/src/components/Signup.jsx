@@ -18,11 +18,11 @@ const Signup = () => {
             'Content-Type': 'application/json',
           },
           credentials: 'include', // this allows cookies (optional but fine)
-          body: JSON.stringify({
+          body: {
             userName, // ✅ must be same casing as backend
             email,
             password,
-          }),
+          },
         }
       );
 
