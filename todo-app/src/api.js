@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:4000/api/v1';
+const API_URL = 'https://todo-backend-henna-kappa.vercel.app/api/v1';
 
 export const apiCall = async (endpoint, method = 'GET', body = null) => {
   try {
