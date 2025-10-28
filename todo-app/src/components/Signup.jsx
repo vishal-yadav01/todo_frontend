@@ -11,7 +11,8 @@ const Signup = () => {
     e.preventDefault();
     try {
       const res = await fetch(
-        'https://todo-backend-henna-kappa.vercel.app/api/v1/signup',
+        'https://todo-backend-1-csxl.onrender.com/api/v1/signup',
+
         {
           method: 'POST',
           headers: {
