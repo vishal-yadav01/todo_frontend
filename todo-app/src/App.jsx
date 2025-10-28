@@ -28,7 +28,6 @@ const App = () => {
           element={
             <OpenRoute>
               <Login />
-              <Login />
             </OpenRoute>
           }
         />
