@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import Login from './components/login';
+import Login from './components/Login';
 import Signup from './components/Signup';
 import ProtectedRoute from './ProtectedRoute';
 const App = () => {
