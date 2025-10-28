@@ -17,13 +17,14 @@ export default function Signup() {
     e.preventDefault();
     setError('');
 
-    if (!form.username || !form.email || !form.password) {
+    if (!form.userName || !form.email || !form.password) {
       setError('All fields are required!');
       return;
     }
 
     try {
       const res = await axios.post(`${API_URL}/signup`, form);
+      console.log(res);
       if (res.data?.token) {
         localStorage.setItem('token', res.data.token);
         navigate('/profile');
