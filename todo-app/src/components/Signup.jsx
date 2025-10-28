@@ -19,7 +19,7 @@ const Signup = () => {
           },
           credentials: 'include',
           body: JSON.stringify({
-            userName,
+            userName: 'okkk',
             email,
             password,
           }),
