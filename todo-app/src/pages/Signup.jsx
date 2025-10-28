@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { apiCall } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setAccessFlag } from '../slice/authSlice';
+
+
 export default function Signup() {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export default function Signup() {
   const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -22,8 +24,13 @@ export default function Signup() {
     const res = await apiCall('/signup', 'POST', { userName, email, password });
 
     if (res.success) {
+      // ✅ Store token when signup successful
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+      }
+
       alert('Signup successful!');
-      dispatch(setAccessFlag(true));
+    
       navigate('/profile');
     } else {
       alert(res.message || 'Signup failed');

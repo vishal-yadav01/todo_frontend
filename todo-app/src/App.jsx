@@ -6,32 +6,21 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Login from './pages/Login';
-import Profile from './pages/profile';
 import Signup from './pages/Signup';
-import OpenRoute from './authRoutes/OpenRoute';
-import PrivateRoute from './authRoutes/PrivateRoutes';
+import Profile from './pages/profile';
+
+import PrivateRoute from './authRoutes/privateRoutes';
+
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route
-          path="/login"
-          element={
-            <OpenRoute>
-              <Login />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <OpenRoute>
-              <Signup />
-            </OpenRoute>
-          }
-        />
+        {/* Open routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
         <Route
           path="/profile"
           element={
@@ -40,6 +29,8 @@ export default function App() {
             </PrivateRoute>
           }
         />
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

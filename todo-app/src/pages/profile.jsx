@@ -2,49 +2,51 @@ import React, { useEffect, useState } from 'react';
 import { apiCall } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setAccessFlag } from '../slice/authSlice';
+
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const fetchProfile = async () => {
     try {
       const res = await apiCall('/profile', 'GET');
 
       if (res && res.user) {
         console.log(res.user);
-        // dispatch(setAccessFlag(true));
         setUser(res.user);
       } else {
-        // dispatch(setAccessFlag(false));
-
         navigate('/login');
       }
     } catch (err) {
       console.error('Profile fetch failed:', err);
-      dispatch(setAccessFlag(false));
       navigate('/login');
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ Updated logout logic
   const handleLogout = async () => {
     try {
       const res = await apiCall('/logout', 'POST');
 
+      // Whether backend clears token or not, clear it manually from frontend too
+      localStorage.removeItem('token');
+
       if (res.success) {
         alert('Logout successful');
         setUser(null);
-        dispatch(setAccessFlag(false));
         navigate('/login');
       } else {
         alert(res.message || 'Logout failed');
       }
     } catch (err) {
       console.error('Logout error:', err);
+      localStorage.removeItem('token'); // ✅ ensure token is cleared even on error
       alert('Server not responding.');
+      navigate('/login');
     }
   };
 
