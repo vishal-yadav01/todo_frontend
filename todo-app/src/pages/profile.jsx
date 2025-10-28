@@ -13,10 +13,12 @@ export default function Profile() {
       const res = await apiCall('/profile', 'GET');
 
       if (res && res.user) {
-        dispatch(setAccessFlag(true));
+        console.log(res.user);
+        // dispatch(setAccessFlag(true));
         setUser(res.user);
       } else {
-        dispatch(setAccessFlag(false));
+        // dispatch(setAccessFlag(false));
+
         navigate('/login');
       }
     } catch (err) {
