@@ -1,30 +1,31 @@
-import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from 'react-router-dom';
-import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Login from './pages/Login';
 import Profile from './pages/profile';
 
-import PrivateRoute from './authRoutes/privateRoutes';
+function App() {
+  const isLoggedIn = !!localStorage.getItem('token');
 
-export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Open routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        <Route path="/profile" element={<Profile />} />
-
-        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-      </Routes>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/profile"
+            element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }
+
+export default App;

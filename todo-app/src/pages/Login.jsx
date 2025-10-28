@@ -1,90 +1,74 @@
-import React, { useState } from 'react';
-import { apiCall } from '../api';
+import { useState } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
+const API_URL = 'https://todo-backend-ckd4.vercel.app/api/v1';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPass, setShowPass] = useState(false);
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    if (!email || !password) return alert('All fields required');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return alert('Invalid email format');
+    if (!form.email || !form.password) {
+      setError('Email and Password are required!');
+      return;
+    }
 
-    const res = await apiCall('/login', 'POST', { email, password });
-
-    if (res.success) {
-      // ✅ Store token when login successful
-      if (res.token) {
-        localStorage.setItem('token', res.token);
+    try {
+      const res = await axios.post(`${API_URL}/login`, form);
+      if (res.data?.token) {
+        localStorage.setItem('token', res.data.token);
+        navigate('/profile');
       }
-
-      alert('Login successful!');
-
-      navigate('/profile');
-    } else {
-      alert(res.message || 'Login failed');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
-      <div className="w-full max-w-sm bg-white p-7 rounded-md shadow-md border border-red-100">
-        <h2 className="text-2xl font-semibold text-center text-blue-700 mb-5">
+    <div className="bg-white p-8 rounded-2xl shadow-md w-96">
+      <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+      {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-md"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-md"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+        >
           Login
-        </h2>
+        </button>
+      </form>
 
-        <form onSubmit={handleLogin} className="flex flex-col space-y-3">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-400 focus:outline-none placeholder:text-gray-400"
-          />
-
-          {/* Password input with toggle */}
-          <div className="relative">
-            <input
-              type={showPass ? 'text' : 'password'}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-red-300 rounded-md w-full px-3 py-2 pr-16 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder:text-gray-400"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPass((prev) => !prev)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-blue-600 hover:text-red-600 font-medium"
-            >
-              {showPass ? 'Hide' : 'Show'}
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            className="bg-red-500 hover:bg-red-600 text-white font-medium rounded-md py-2 transition-all duration-200"
-          >
-            Login
-          </button>
-        </form>
-
-        <p className="text-center text-sm mt-4 text-slate-600">
-          Don’t have an account?{' '}
-          <Link
-            to="/signup"
-            className="text-blue-600 hover:text-red-500 hover:underline"
-          >
-            Signup here
-          </Link>
-        </p>
-      </div>
+      <p className="text-center text-sm mt-4">
+        Don’t have an account?{' '}
+        <Link to="/signup" className="text-blue-600">
+          Sign Up
+        </Link>
+      </p>
     </div>
   );
 }

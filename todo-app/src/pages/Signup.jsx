@@ -1,97 +1,82 @@
-import React, { useState } from 'react';
-import { apiCall } from '../api';
+import { useState } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
+const API_URL = 'https://todo-backend-ckd4.vercel.app/api/v1';
 
 export default function Signup() {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPass, setShowPass] = useState(false);
+  const [form, setForm] = useState({ userName: '', email: '', password: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const handleSignup = async (e) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    if (!userName || !email || !password) return alert('All fields required');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return alert('Invalid email format');
-    if (password.length < 6)
-      return alert('Password must be at least 6 characters');
+    if (!form.username || !form.email || !form.password) {
+      setError('All fields are required!');
+      return;
+    }
 
-    const res = await apiCall('/signup', 'POST', { userName, email, password });
-
-    if (res.success) {
-      // ✅ Store token when signup successful
-      if (res.token) {
-        localStorage.setItem('token', res.token);
+    try {
+      const res = await axios.post(`${API_URL}/signup`, form);
+      if (res.data?.token) {
+        localStorage.setItem('token', res.data.token);
+        navigate('/profile');
       }
-
-      alert('Signup successful!');
-
-      navigate('/profile');
-    } else {
-      alert(res.message || 'Signup failed');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Signup failed');
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-amber-50">
-      <div className="w-full max-w-sm bg-white/95 p-7 rounded-lg shadow-md border border-amber-100">
-        <h2 className="text-center text-2xl font-semibold text-slate-700 mb-5">
-          Signup
-        </h2>
+    <div className="bg-white p-8 rounded-2xl shadow-md w-96">
+      <h2 className="text-2xl font-bold mb-4 text-center">Create Account</h2>
+      {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
-        <form onSubmit={handleSignup} className="flex flex-col space-y-3">
-          <input
-            type="text"
-            placeholder="Username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            className="border border-amber-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-lime-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 placeholder:text-gray-400"
-          />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-md"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-md"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password (min 6 chars)"
+          value={form.password}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-md"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+        >
+          Sign Up
+        </button>
+      </form>
 
-          {/* Password input with toggle */}
-          <div className="relative">
-            <input
-              type={showPass ? 'text' : 'password'}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-teal-300 rounded-md w-full px-3 py-2 pr-16 focus:outline-none focus:ring-2 focus:ring-teal-400 placeholder:text-gray-400"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPass((prev) => !prev)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-teal-600 hover:text-teal-700 font-medium"
-            >
-              {showPass ? 'Hide' : 'Show'}
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            className="bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md font-medium transition-colors duration-200"
-          >
-            Signup
-          </button>
-        </form>
-
-        <p className="text-sm text-center mt-4 text-slate-600">
-          Already have an account?{' '}
-          <Link to="/login" className="text-amber-600 hover:underline">
-            Login here
-          </Link>
-        </p>
-      </div>
+      <p className="text-center text-sm mt-4">
+        Already have an account?{' '}
+        <Link to="/login" className="text-blue-600">
+          Login
+        </Link>
+      </p>
     </div>
   );
 }

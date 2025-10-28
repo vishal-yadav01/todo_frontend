@@ -1,88 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { apiCall } from '../api';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
 
-  const fetchProfile = async () => {
-    try {
-      const res = await apiCall('/profile', 'GET');
-
-      if (res && res.user) {
-        console.log(res.user);
-        setUser(res.user);
-      } else {
-        navigate('/login');
-      }
-    } catch (err) {
-      console.error('Profile fetch failed:', err);
-      navigate('/login');
-    } finally {
-      setLoading(false);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
-
-  // ✅ Updated logout logic
-  const handleLogout = async () => {
-    try {
-      const res = await apiCall('/logout', 'POST');
-
-      // Whether backend clears token or not, clear it manually from frontend too
-      localStorage.removeItem('token');
-
-      if (res.success) {
-        alert('Logout successful');
-        setUser(null);
-        navigate('/login');
-      } else {
-        alert(res.message || 'Logout failed');
-      }
-    } catch (err) {
-      console.error('Logout error:', err);
-      localStorage.removeItem('token'); // ✅ ensure token is cleared even on error
-      alert('Server not responding.');
-      navigate('/login');
-    }
-  };
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  if (loading)
-    return (
-      <h3 className="text-center text-slate-500 mt-24 text-lg tracking-wide">
-        Loading profile...
-      </h3>
-    );
-
-  if (!user)
-    return (
-      <h3 className="text-center text-slate-500 mt-24 text-lg tracking-wide">
-        Unauthorized. Redirecting...
-      </h3>
-    );
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50">
-      <div className="w-full max-w-md bg-white p-7 rounded-md shadow-sm border border-blue-100 text-center">
-        <h2 className="text-2xl font-semibold text-slate-800 mb-3">
-          Welcome,{' '}
-          <span className="text-blue-600 font-medium">{user.email}</span>
-        </h2>
+    <div className="bg-white p-8 rounded-2xl shadow-md w-96 text-center">
+      <h2 className="text-2xl font-bold mb-4">Welcome to your Profile 🎉</h2>
+      <p className="text-gray-600 mb-6">You are logged in successfully.</p>
+      <p className="text-xs text-gray-400 mb-4">
+        Token: {token?.slice(0, 25)}...
+      </p>
 
-        <button
-          onClick={handleLogout}
-          className="mt-5 px-5 py-2.5 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-md font-medium transition-all duration-200 shadow-sm"
-        >
-          Logout
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+      >
+        Logout
+      </button>
     </div>
   );
 }
