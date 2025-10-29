@@ -20,7 +20,7 @@ const Signup = () => {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({
-            userName: 'okkk', // same logic you provided
+            userName: 'okkk', // keeping your logic intact
             email,
             password,
           }),
@@ -52,8 +52,8 @@ const Signup = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-500"></div>
       </div>
 
-      <div className="w-full max-w-xs relative z-10">
-        {/* Card (solid white) */}
+      <div className="w-full max-w-sm relative z-10">
+        {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
           {/* Header */}
           <div className="text-center mb-6">
@@ -161,6 +161,8 @@ const Signup = () => {
             </p>
           </div>
         </div>
+
+        {/* Footer */}
       </div>
     </div>
   );
