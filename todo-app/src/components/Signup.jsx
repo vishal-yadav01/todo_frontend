@@ -20,7 +20,7 @@ const Signup = () => {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({
-            userName: 'okkk', // (keeping your logic exactly as it is)
+            userName: 'okkk', // same logic you provided
             email,
             password,
           }),
@@ -53,18 +53,20 @@ const Signup = () => {
       </div>
 
       <div className="w-full max-w-xs relative z-10">
-        {/* Card */}
-        <div className="bg-white/60 backdrop-blur-md rounded-2xl shadow-lg p-5 border border-white/30">
+        {/* Card (solid white) */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+          {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 rounded-2xl mb-3 shadow-md">
               <User className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-extrabold text-gray-800">
               Create Account
             </h2>
-            <p className="text-gray-600 mt-2 text-xs">Sign up to get started</p>
+            <p className="text-gray-500 mt-2 text-xs">Sign up to get started</p>
           </div>
 
+          {/* Form */}
           <form onSubmit={handleSignup} className="space-y-4">
             {/* Username */}
             <div className="space-y-1">
@@ -79,7 +81,7 @@ const Signup = () => {
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                   required
-                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none bg-white/90 hover:border-gray-300 text-sm"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none hover:border-gray-300 text-sm"
                 />
               </div>
             </div>
@@ -97,7 +99,7 @@ const Signup = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none bg-white/90 hover:border-gray-300 text-sm"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none hover:border-gray-300 text-sm"
                 />
               </div>
             </div>
@@ -115,7 +117,7 @@ const Signup = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none bg-white/90 hover:border-gray-300 text-sm"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 outline-none hover:border-gray-300 text-sm"
                 />
               </div>
             </div>
