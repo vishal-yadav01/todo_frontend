@@ -152,11 +152,6 @@ const Login = () => {
         </div>
 
         {/* Footer Text */}
-        <div className="text-center mt-4 space-y-1">
-          <p className="text-white/80 text-xs font-medium drop-shadow-lg">
-            🔒 Secured with end-to-end encryption
-          </p>
-        </div>
       </div>
     </div>
   );
