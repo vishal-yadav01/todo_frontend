@@ -49,7 +49,7 @@ const Login = () => {
 
       <div className="w-full max-w-md relative z-10">
         {/* Glass morphism card */}
-        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl p-6 border border-white/30 max-w-sm mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-600 rounded-2xl mb-4 shadow-lg transform hover:rotate-6 transition-transform duration-300">
