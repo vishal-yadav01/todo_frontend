@@ -161,13 +161,6 @@ const Signup = () => {
             </p>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="text-center mt-4 space-y-1">
-          <p className="text-white/80 text-xs font-medium drop-shadow-lg">
-            🔒 Your data is securely encrypted
-          </p>
-        </div>
       </div>
     </div>
   );
